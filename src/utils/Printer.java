@@ -5,7 +5,7 @@ import java.io.*;
 public class Printer {
     private static BufferedReader fileReader;
 
-    public static void print(String filePath) {
+    public static void printFromFile(String filePath) {
         try {
             fileReader = new BufferedReader(new FileReader(filePath));
         } catch (FileNotFoundException e) {
@@ -29,7 +29,7 @@ public class Printer {
         int timer = duration;
 
         System.out.println(message);
-        while (timer >= 0) {
+        while (timer > 0) {
             try {
                 System.out.println(timer--);
                 Thread.sleep(1000);
@@ -39,7 +39,7 @@ public class Printer {
         }
     }
 
-    public void clearScreen() {
+    public static void clearScreen() {
         for (int i = 0; i < 30; i++) {
             System.out.println();
         }
