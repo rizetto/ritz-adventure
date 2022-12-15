@@ -24,10 +24,10 @@ public class Story implements Playable {
     }
 
     @Override
-    public void startGame() {
+    public void startGame() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         showLoadingScreen();
         try {
-            sound.play(Audio.sevenEleven);
+            sound.play(Audio.TITLE, true);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             throw new RuntimeException(e);
         }
@@ -45,11 +45,10 @@ public class Story implements Playable {
 
     private void showLoadingScreen() {
         printer.printFromFile(Dialogs.BANNER);
-        printer.printCountdown(3, "\nStarting");
+        System.out.println();
     }
 
     private void showMenu() {
-        Console.clearScreen();
         printer.printFromFile(Dialogs.MENU);
 
         int mode = Console.getIntegerInput("Enter mode: ");
@@ -68,14 +67,24 @@ public class Story implements Playable {
         }
 
         Console.clearScreen();
+        try {
+            sound.stop();
+            sound.play(Audio.SELECT, false);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void renderAdventureMode() {
 
     }
 
-    private void renderZenMode() {
+    private void renderZenMode() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         printer.printCountdown(3, "Starting Zen Mode");
+
+        sound.stop();
+        sound.play(Audio.ADVENTURE, true);
+
         Console.clearScreen();
         System.out.println("Press E to read through the story");
         try {
