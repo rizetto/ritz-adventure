@@ -40,4 +40,9 @@ public class Dialog implements Printer {
             }
         }
     }
+
+    @Override
+    public void printSeparator() {
+        System.out.println("==================================");
+    }
 }
