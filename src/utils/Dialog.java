@@ -40,11 +40,4 @@ public class Dialog implements Printer {
             }
         }
     }
-
-    @Override
-    public void clearScreen() {
-        for (int i = 0; i < 30; i++) {
-            System.out.println();
-        }
-    }
 }
