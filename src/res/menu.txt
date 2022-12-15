@@ -8,7 +8,8 @@ and somewhat comedic story.
 
 Choose from the menu below
 ==================================================
-1. Play
-2. Characters
-3. Exit
+1. Adventure
+2. Zen
+3. Characters
+4. Exit
 ==================================================
