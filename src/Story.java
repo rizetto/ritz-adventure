@@ -1,11 +1,11 @@
 import models.Character;
+import story.Audio;
 import story.Dialogs;
 import story.StoryMode;
-import utils.Console;
-import utils.Database;
-import utils.Playable;
-import utils.Printer;
+import utils.*;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,16 +14,23 @@ import java.util.List;
 public class Story implements Playable {
     private final Printer printer;
     private final Database<Character> database;
+    private final Sound sound;
     private StoryMode storyMode;
 
-    public Story(Printer printer, Database<Character> database) {
+    public Story(Printer printer, Database<Character> database, Sound sound) {
         this.printer = printer;
         this.database = database;
+        this.sound = sound;
     }
 
     @Override
     public void startGame() {
         showLoadingScreen();
+        try {
+            sound.play(Audio.sevenEleven);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
 
         while (true) {
             showMenu();
