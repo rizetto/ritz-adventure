@@ -5,6 +5,10 @@ import utils.Console;
 import utils.Database;
 import utils.Printer;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.spi.AbstractResourceBundleProvider;
 
@@ -64,7 +68,23 @@ public class Story {
     }
 
     private void renderZenMode() {
-
+        printer.printCountdown(3, "Starting Zen Mode");
+        Console.clearScreen();
+        System.out.println("Press E to read through the story");
+        try {
+            BufferedReader fileReader = new BufferedReader(new FileReader("./src/res/story.txt"));
+            String line = fileReader.readLine();
+            while (line != null) {
+                System.out.println(line);
+                printer.printSeparator();
+                if (Console.getStringInput("").equalsIgnoreCase("E")) {
+                    line = fileReader.readLine();
+                    Console.clearScreen();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void renderCharacterMode() {
