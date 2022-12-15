@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ritz-adventure:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ritz_adventure_jar</output-path>
+    <root id="archive" name="ritz-adventure.jar">
+      <element id="module-output" name="ritz-adventure" />
+    </root>
+  </artifact>
+</component>

@@ -20,4 +20,16 @@ public class Protagonist extends Character {
     public boolean isTired() {
         return money < 30 && hunger < 30;
     }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
+    }
+
+    public void setTired(boolean tired) {
+        isTired = tired;
+    }
 }

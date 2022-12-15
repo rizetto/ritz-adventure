@@ -1,4 +1,6 @@
+import com.sun.security.jgss.GSSUtil;
 import models.Character;
+import models.Protagonist;
 import story.Audio;
 import story.Dialogs;
 import story.StoryMode;
@@ -16,11 +18,21 @@ public class Story implements Playable {
     private final Database<Character> database;
     private final Sound sound;
     private StoryMode storyMode;
+    private Protagonist protagonist;
 
     public Story(Printer printer, Database<Character> database, Sound sound) {
         this.printer = printer;
         this.database = database;
         this.sound = sound;
+        protagonist = new Protagonist(
+                "Ritz",
+                19,
+                "A boy who likes to code and make applications\n" +
+                        "for both mobile and web. He also likes to listen to\n" +
+                        "music and play the piano.\n"
+        );
+        protagonist.setMoney(100);
+        protagonist.setHunger(50);
     }
 
     @Override
@@ -75,8 +87,74 @@ public class Story implements Playable {
         }
     }
 
-    private void renderAdventureMode() {
+    private void renderAdventureMode() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        printer.printCountdown(3, "Starting Adventure");
 
+        sound.stop();
+        sound.play(Audio.ADVENTURE, true);
+
+        Console.clearScreen();
+        printStatus();
+        System.out.println("Press E to read through the story");
+        try {
+            BufferedReader fileReader = new BufferedReader(new FileReader("./src/res/adventure.txt"));
+            String line = fileReader.readLine();
+            String response = "";
+            while (line != null) {
+                System.out.println(line);
+                printer.printSeparator();
+
+                if (line.contains("7/11")) {
+                    sound.stop();
+                    sound.play(Audio.JOPAY, true);
+                }
+
+                if (line.contains("Lakad")) {
+                    response = Console.getStringInput("Pindutin ang Y kung papayag ka na lumakad: ");
+                    if (response.equalsIgnoreCase("n")) {
+                        System.out.println("Nauna ka ng umuwi");
+                        System.exit(0);
+                    } else {
+                        System.out.println("Game!");
+                    }
+
+                    line = fileReader.readLine();
+                    continue;
+                } else if (line.contains("hotdog")) {
+                    response = Console.getStringInput("Pindutin ang Y kung papayag ka na bumili ng hotdog: ");
+                    if (response.equalsIgnoreCase("y")) {
+                        System.out.println("Tara, nagugutom ako eh");
+                        this.protagonist.setMoney(protagonist.getMoney() - 39);
+                        this.protagonist.setHunger(protagonist.getHunger() + 10);
+                    } else {
+                        System.out.println("Sa sunod nalang, nagtitipid ako eh. Pero sasama lang ako");
+                    }
+
+                    line = fileReader.readLine();
+                    continue;
+                } else if (line.contains("nakabili")) {
+                    printStatus();
+                    System.out.println(line);
+                    printer.printSeparator();
+                }
+
+                if (Console.getStringInput("").equalsIgnoreCase("E")) {
+                    line = fileReader.readLine();
+                    Console.clearScreen();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        printStatus();
+    }
+
+    private void printStatus() {
+        Console.clearScreen();
+        printer.printSeparator();
+        System.out.println("Money left: " + protagonist.getMoney());
+        System.out.println("Hunger: " + protagonist.getHunger());
     }
 
     private void renderZenMode() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -94,6 +172,10 @@ public class Story implements Playable {
                 System.out.println(line);
                 printer.printSeparator();
                 if (Console.getStringInput("").equalsIgnoreCase("E")) {
+                    if (line.contains("7/11")) {
+                        sound.stop();
+                        sound.play(Audio.JOPAY, true);
+                    }
                     line = fileReader.readLine();
                     Console.clearScreen();
                 }
@@ -103,12 +185,14 @@ public class Story implements Playable {
         }
     }
 
-    private void renderCharacterMode() {
+    private void renderCharacterMode() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Console.clearScreen();
         while (true) {
             printCharacters();
+            System.out.println("Enter a number greater than 4 to exit");
             int characterCode = Console.getIntegerInput("Choose a character to view information: ");
             if (characterCode > database.getAll().size()) {
+                Console.clearScreen();
                 break;
             }
 
@@ -116,9 +200,10 @@ public class Story implements Playable {
         }
     }
 
-    private void printCharacters() {
+    private void printCharacters() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         List<Character> characters = database.getAll();
 
+        sound.play(Audio.SELECT, false);
         System.out.println("Characters");
         printer.printSeparator();
         for (Character character : characters) {
@@ -133,7 +218,7 @@ public class Story implements Playable {
         List<Character> characters = database.getAll();
 
         printer.printSeparator();
-        for (int i = 0; i < characters.size(); i++ ){
+        for (int i = 0; i < characters.size(); i++) {
             if (i == (characterCode - 1)) {
                 Console.clearScreen();
 
