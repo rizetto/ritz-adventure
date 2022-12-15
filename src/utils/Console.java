@@ -17,9 +17,14 @@ public class Console {
         return 0;
     }
 
-    public static String getStringInput(String message) {
+    public static String getStringInputLine(String message) {
         System.out.print(message);
         return scanner.nextLine();
+    }
+
+    public static String getStringInput(String message) {
+        System.out.print(message);
+        return scanner.next();
     }
 
     public static void clearScreen() {
