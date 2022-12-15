@@ -1,6 +1,5 @@
 import models.CharacterDatabase;
 import utils.Dialog;
-import utils.Printer;
 
 public class Main {
     public static void main(String[] args) {

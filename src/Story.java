@@ -6,15 +6,13 @@ import utils.Database;
 import utils.Printer;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.spi.AbstractResourceBundleProvider;
 
 public class Story {
-    private Printer printer;
-    private Database<Character> database;
+    private final Printer printer;
+    private final Database<Character> database;
     private StoryMode storyMode;
 
     public Story(Printer printer, Database<Character> database) {
