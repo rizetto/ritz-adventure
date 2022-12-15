@@ -12,14 +12,21 @@ public class BackgroundMusic implements Sound {
     private String filePath;
 
     @Override
-    public void play(String filePath) throws
+    public void play(String filePath, boolean loop) throws
             UnsupportedAudioFileException,
             IOException,
             LineUnavailableException {
         audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        if (loop) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
         clip.start();
+    }
+
+    @Override
+    public void stop() {
+        clip.stop();
     }
 }
