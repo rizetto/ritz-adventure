@@ -3,6 +3,7 @@ import story.Dialogs;
 import story.StoryMode;
 import utils.Console;
 import utils.Database;
+import utils.Playable;
 import utils.Printer;
 
 import java.io.BufferedReader;
@@ -10,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-public class Story {
+public class Story implements Playable {
     private final Printer printer;
     private final Database<Character> database;
     private StoryMode storyMode;
@@ -20,6 +21,7 @@ public class Story {
         this.database = database;
     }
 
+    @Override
     public void startGame() {
         showLoadingScreen();
 
@@ -117,6 +119,8 @@ public class Story {
         printer.printSeparator();
         for (int i = 0; i < characters.size(); i++ ){
             if (i == (characterCode - 1)) {
+                Console.clearScreen();
+
                 Character character = characters.get(i);
                 System.out.printf(
                         "Name: %s\nAge: %s\nDescription: %s\n",
